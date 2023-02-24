@@ -28,9 +28,17 @@ class ToDo extends StatelessWidget {
                   )));
         },
         backgroundColor: Colors.teal,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+        child: BlocBuilder<TaskCubit, TaskState>(
+          builder: (context, state) {
+            return state is TaskAddedLoadingState
+                ? const CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  );
+          },
         ),
       ),
       backgroundColor: Colors.teal,
@@ -71,15 +79,17 @@ class ToDo extends StatelessWidget {
                   decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(30))),
-                  child: context.read<TaskCubit>().tasks.isEmpty
-                      ? const Center(child: Text("No Tasks"))
-                      : ListView(
-                          children: context
-                              .read<TaskCubit>()
-                              .tasks
-                              .map((e) => TaskStyle(e))
-                              .toList(),
-                        ),
+                  child: state is CreateDataBaseLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : context.read<TaskCubit>().tasks.isEmpty
+                          ? const Center(child: Text("No Tasks"))
+                          : ListView(
+                              children: context
+                                  .read<TaskCubit>()
+                                  .tasks
+                                  .map((e) => TaskStyle(e))
+                                  .toList(),
+                            ),
                 ),
               ),
             ],

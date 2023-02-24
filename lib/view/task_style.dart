@@ -15,18 +15,21 @@ class TaskStyle extends StatefulWidget {
 class _TaskStyleState extends State<TaskStyle> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(widget.task.name),
-      subtitle: Text(widget.task.date),
-      trailing: CustomCheckBox(
-          value: widget.task.isDone,
-          splashColor: Colors.red.withOpacity(0.4),
-          splashRadius: 40,
-          onChanged: (val) {
-            setState(() {
-              widget.task.isDone = val;
-            });
-          }),
+    return Dismissible(
+      key: Key(widget.task.id),
+      child: ListTile(
+        title: Text(widget.task.name),
+        subtitle: Text(widget.task.date),
+        trailing: CustomCheckBox(
+            value: widget.task.isDone,
+            splashColor: Colors.red.withOpacity(0.4),
+            splashRadius: 40,
+            onChanged: (val) {
+              setState(() {
+                widget.task.isDone = val;
+              });
+            }),
+      ),
     );
   }
 }
