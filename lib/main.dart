@@ -2,18 +2,27 @@
 
 import 'package:flutter/material.dart';
 import 'package:to_do/cubit/tasks_cubbit.dart';
+import 'package:to_do/view/signin_screen.dart';
 import 'package:to_do/view/to_do.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'cubit/my_bloc_observer.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+Future<void> main() async {
   Bloc.observer = MyBlocObserver();
-  // Firebase.
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  String? uid = (prefs.getString("uid"));
+
+  await Firebase.initializeApp();
+// native Splash screen (Task 1)
+  runApp(MyApp(uid));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp(this.uid, {Key? key}) : super(key: key);
+  final String? uid;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +32,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'to do ',
         theme: ThemeData(primarySwatch: Colors.teal),
-        home: const ToDo(),
+        home: uid == null ? const LoginScreenDemo() : const ToDo(),
       ),
     );
   }

@@ -1,12 +1,14 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:to_do/view/signin_screen.dart';
 import '../cubit/tasks_satate.dart';
 import 'add_task_screen.dart';
 import 'package:to_do/cubit/tasks_cubbit.dart';
 import 'package:to_do/view/task_style.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ToDo extends StatelessWidget {
   const ToDo({Key? key}) : super(key: key);
@@ -59,6 +61,20 @@ class ToDo extends StatelessWidget {
             );
           },
         ),
+        actions: [
+          IconButton(
+            color: Colors.white,
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              final prefs = await SharedPreferences.getInstance();
+              prefs.clear();
+
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const LoginScreenDemo()),
+                  (route) => false);
+            },
+          )
+        ],
       ),
       body: BlocBuilder<TaskCubit, TaskState>(
         builder: (context, state) {
