@@ -15,6 +15,25 @@ class TaskCubit extends Cubit<TaskState> {
 
   List<TaskModel> tasks = [];
 
+  void deleteTask(String id) {
+    _database.delete("Tasks", where: "id=$id");
+    tasks.removeWhere((element) => element.id == id);
+    emit(TaskDeleteDone());
+  }
+
+  void updateTask(String id, bool value) {
+    _database
+        .update("Tasks", {"isDone": value ? 1 : 0}, where: "id=$id")
+        .then((value) {
+      print("I finished");
+    }); // Future (Async function) 1 sec
+
+    print("I here");
+    int index = tasks.indexWhere((element) => element.id == id);
+    tasks[index].isDone = value;
+    emit(TaskUpdateDone());
+  }
+
   void addTask(TaskModel task) async {
     emit(TaskAddedLoadingState());
 

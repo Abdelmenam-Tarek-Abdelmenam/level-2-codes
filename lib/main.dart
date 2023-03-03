@@ -8,6 +8,7 @@ import 'cubit/my_bloc_observer.dart';
 
 void main() {
   Bloc.observer = MyBlocObserver();
+  // Firebase.
   runApp(const MyApp());
 }
 

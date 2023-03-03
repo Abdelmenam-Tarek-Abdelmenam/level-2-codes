@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:custom_check_box/custom_check_box.dart';
+import 'package:to_do/cubit/tasks_cubbit.dart';
 import 'package:to_do/models/task_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TaskStyle extends StatefulWidget {
   const TaskStyle(this.task, {Key? key}) : super(key: key);
@@ -17,6 +19,13 @@ class _TaskStyleState extends State<TaskStyle> {
   Widget build(BuildContext context) {
     return Dismissible(
       key: Key(widget.task.id),
+      background: Container(
+        color: Colors.red,
+      ),
+      direction: DismissDirection.endToStart,
+      onDismissed: (dir) {
+        context.read<TaskCubit>().deleteTask(widget.task.id);
+      },
       child: ListTile(
         title: Text(widget.task.name),
         subtitle: Text(widget.task.date),
@@ -25,9 +34,10 @@ class _TaskStyleState extends State<TaskStyle> {
             splashColor: Colors.red.withOpacity(0.4),
             splashRadius: 40,
             onChanged: (val) {
-              setState(() {
-                widget.task.isDone = val;
-              });
+              context.read<TaskCubit>().updateTask(widget.task.id, val);
+              // setState(() {
+              //   widget.task.isDone = val;
+              // });
             }),
       ),
     );

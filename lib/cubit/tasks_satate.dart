@@ -11,3 +11,7 @@ class TitleAddedState extends TaskState {}
 class CreateDataBaseLoading extends TaskState {}
 
 class CreateDataBaseDone extends TaskState {}
+
+class TaskUpdateDone extends TaskState {}
+
+class TaskDeleteDone extends TaskState {}
